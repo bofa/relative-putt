@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>three.js webgl - shader [Monjori]</title>
+    <title>Relative Putt</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <style>
@@ -35,10 +35,6 @@
 <body>
 
     <div id="container"></div>
-    <div id="info">
-        <a href="http://threejs.org" target="_blank" rel="noopener">three.js</a> - shader demo. featuring
-        <a href="http://www.pouet.net/prod.php?which=52761" target="_blank" rel="noopener">Monjori by Mic</a>
-    </div>
 
     <script src="three.min.js"></script>
     <script src="Detector.js"></script>
@@ -159,7 +155,7 @@
 
             // scene.add(camera);
 
-            var geometry = new THREE.PlaneBufferGeometry(2, 2, 1000, 1000);
+            var geometry = new THREE.PlaneBufferGeometry(2, 2, 500, 500);
 
             uniforms = {
                 time: { value: 1.0 }
