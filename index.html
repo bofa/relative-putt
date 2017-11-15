@@ -42,13 +42,22 @@
     <script id="vertexShader" type="x-shader/x-vertex">
 
         varying vec3 p;
-        varying float dn;
-        const float G = 4.0;
+        varying float dn1;
+        varying float dn2;
+        const float m1 = 4.0;
+        const float m2 = 1.0;
         const float c = 2.0;
+        const vec2 cm1 = vec2(0.0, 0.0);
+        varying vec2 cm2;
+
+        uniform float time;
         
         void main()	{
-            dn = (c*dot(position.xy, position.xy) + 1.0);
-            float z = -G/dn;
+            cm2 = vec2(sin(time), cos(time));
+
+            dn1 = (c*dot(position.xy - cm1, position.xy - cm1) + 1.0);
+            dn2 = (c*dot(position.xy - cm2, position.xy - cm2) + 1.0);
+            float z = -m1/dn1 - m2/dn2;
 
             p = vec3(position.xy, z);
             
@@ -60,12 +69,13 @@
     <script id="fragmentShader" type="x-shader/x-fragment">
 
         const float withBands = 0.005;
-        // const float distanceBands = 0.07;
         const float distanceBands = 0.2;
 
-        const float G = 4.0;
+        const float m1 = 4.0;
+        const float m2 = 1.0;
         const float c = 2.0;
-        const vec2 CM = vec2(0.0, 0.0);
+        const vec2 cm1 = vec2(0.0, 0.0);
+        const vec2 cm2 = vec2(0.5, 0.5);
         
         const vec3 light = normalize(vec3(2, 0, -6));
         const float ambient = 0.1;
@@ -76,7 +86,8 @@
         const vec3 colorLine = vec3(0.3490, 0.8784, 0.91761);
         
         varying vec3 p;
-        varying float dn;
+        varying float dn1;
+        varying float dn2;
 
         uniform float time;
 
@@ -84,8 +95,8 @@
             vec2 pos = vec2(p.xy);
             
             vec3 n = normalize(vec3(
-                -2.0*c*G*p.x/dn/dn, 
-                -2.0*c*G*p.y/dn/dn,
+                -2.0*c*m1*p.x/dn1/dn1 - 2.0*c*m2*p.x/dn2/dn2, 
+                -2.0*c*m1*p.y/dn1/dn1 - 2.0*c*m2*p.y/dn2/dn2,
                 1.0
             ));
 
@@ -155,7 +166,7 @@
 
             // scene.add(camera);
 
-            var geometry = new THREE.PlaneBufferGeometry(2, 2, 500, 500);
+            var geometry = new THREE.PlaneBufferGeometry(4, 4, 500, 500);
 
             uniforms = {
                 time: { value: 1.0 }
